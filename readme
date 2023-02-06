@@ -3,3 +3,5 @@ Ludobots assignment 5:
 I laid out a few beams at various heights in the world, and made a 'worm' robot that drops onto the beams.
 The fitness function compares the parent's z-coordinate to that of its child - higher z-coordinate is better.
 My intent is that the robots get better at staying on top of the beams instead of bouncing off of them as they initially do.
+
+To run a simulation for yourself, just pull this repository and run search.py
