@@ -18,12 +18,12 @@ class SIMULATION:
             self.physicsClient = p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.8)
-        self.world = WORLD()
+        self.world = WORLD(solutionID)
         self.robot = ROBOT(solutionID)
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
 
     def Run(self):
-        for i in range(1000):
+        for i in range(c.simLength):
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()

@@ -11,7 +11,10 @@ fPhaseOffset = numpy.pi/4
 numberOfGenerations = 10
 populationSize = 10
 
-numSensorNeurons = 9
-numMotorNeurons = 8
+numSensorNeurons = 16
+numMotorNeurons = 15
+
+maxForce = 250
+simLength = 1000
 
 
