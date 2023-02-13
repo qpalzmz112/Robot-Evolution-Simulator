@@ -1,4 +1,4 @@
 *.sdf
-.vs
-data
-__pycache__
+.vs/
+data/
+__pycache__/
