@@ -16,6 +16,6 @@ numMotorNeurons = 15
 maxForce = 250
 simLength = 1000
 
-motorJointRange = 2
+motorJointRange = 1
 
 

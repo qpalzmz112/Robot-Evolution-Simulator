@@ -32,9 +32,6 @@ class SOLUTION:
 
     def Create_World(self):
         pyrosim.Start_SDF("world" + str(self.myID) + ".sdf")
-
-        pyrosim.Send_Cube(name="Box", pos=[-2,2,0.5] , size=[1, 1, 1], mass=1000)
-
         pyrosim.End()
 
     def Generate_Body(self):
@@ -46,8 +43,8 @@ class SOLUTION:
         # store joint names in a list
         # send a motor to each joint
         
-        self.chainlen = random.randint(1, 10)
-        bound = random.uniform(0.5, 3)
+        self.chainlen = random.randint(5, 15)
+        bound = random.uniform(0.5, 2)
         self.sensors = [0]*self.chainlen
         for i in range(self.chainlen):
             coin = random.randint(0, 1)
@@ -62,8 +59,7 @@ class SOLUTION:
         else:
             col = "cyan"
         pyrosim.Send_Cube(name="L0", pos=[0, 0, 1.5], size=[x,y,z], color=col)
-        if self.chainlen > 1:
-            pyrosim.Send_Joint(name="L0_L1", parent="L0", child="L1", type = "revolute", position=[-x/2,0,1.5], jointAxis = "0 0 1")
+        pyrosim.Send_Joint(name="L0_L1", parent="L0", child="L1", type = "revolute", position=[0,-y/2,1.5], jointAxis = "1 0 0")
 
         for i in range(1, self.chainlen):
             x = random.uniform(0.1, bound)
@@ -73,9 +69,9 @@ class SOLUTION:
                 col = "green"
             else:
                 col = "cyan"
-            pyrosim.Send_Cube(name='L'+str(i), pos=[-x/2,0,0], size=[x,y,z], color=col)
+            pyrosim.Send_Cube(name='L'+str(i), pos=[0,-y/2,0], size=[x,y,z], color=col)
             if i < self.chainlen-1:
-                pyrosim.Send_Joint(name='L'+str(i)+'_'+'L'+str(i+1),parent='L'+str(i),child='L'+str(i+1),type="revolute",position=[-x,0,0],jointAxis="0 0 1")
+                pyrosim.Send_Joint(name='L'+str(i)+'_'+'L'+str(i+1),parent='L'+str(i),child='L'+str(i+1),type="revolute",position=[0,-y,0],jointAxis="1 0 0")
 
         pyrosim.End()
 
