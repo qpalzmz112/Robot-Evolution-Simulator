@@ -7,4 +7,4 @@ The kinematic chain consists of 5 to 15 links. Each link has its x, y, and z dim
 Each link has a 50% chance to have a sensor, in which case the link is colored green.
 
 ## Sources:
-CS 396: Artifial Life at Northwestern University, [r/ludobots\(https://www.reddit.com/r/ludobots/), and [pyrosim](https://github.com/jbongard/pyrosim).
+CS 396: Artifial Life at Northwestern University, [r/ludobots](https://www.reddit.com/r/ludobots/), and [pyrosim](https://github.com/jbongard/pyrosim).
