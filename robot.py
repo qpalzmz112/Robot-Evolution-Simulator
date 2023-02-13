@@ -21,6 +21,7 @@ class ROBOT:
         self.sensors = {}
         for linkName in pyrosim.linkNamesToIndices:
             self.sensors[linkName] = SENSOR(linkName)
+        print(self.sensors)
 
     def Sense(self, t):
         for s in self.sensors:
@@ -39,13 +40,13 @@ class ROBOT:
                 self.motors[jointName].Set_Value(self, desiredAngle)
 
     def Think(self):
-        self.nn.Update()
+        if len(self.sensors.keys()):
+            self.nn.Update()
 
     def Get_Fitness(self):
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
         basePosition = basePositionAndOrientation[0]
         zPosition = basePosition[2]
-        #distance = math.sqrt((basePosition[0]-0)**2+(basePosition[1]-1)**2+(basePosition[2]-2)**2)
         f = open("tmp" + str(self.solutionID) + ".txt", "w")
         f.write(str(zPosition))
         f.close()
