@@ -6,7 +6,7 @@ import numpy
 import os
 import time
 import constants as c
-from genotype import NODE
+from genotype import GENOTYPE
 
 class SOLUTION:
     def __init__(self, ID):
@@ -46,91 +46,9 @@ class SOLUTION:
 
         # store joint names in a list
         # send a motor to each joint
-        
-        self.depth = random.randint(2, 5)
-        bound = random.uniform(0.5, 2)
-        x = random.uniform(0.1, bound)
-        y = random.uniform(0.1, bound)
-        z = random.uniform(0.1, bound)
 
-        sensor = False
-        if random.randint(0, 1):
-            sensor = True
-        
-        root = NODE(name='root', dims=[x,y,z], pos=[0, 0, 1], sens=sensor)
-
-        if sensor:
-            col = "green"
-        else:
-            col = "cyan"
-
-        root.Send_Link(col)
-
-        #num_children = random.randint(1, 4)
-        num_children = 4
-
-        parent = root
-        #for j in range(self.depth - 1):
-        usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
-        for i in range(num_children):
-            x = random.uniform(0.1, bound)
-            y = random.uniform(0.1, bound)
-            z = random.uniform(0.1, bound)
-
-            sensor = False
-            if random.randint(0, 1):
-                sensor = True
-            if sensor:
-                col = "green"
-            else:
-                col = "cyan"
-
-            dir = random.randint(0, 8)
-            while dir in usedDirections:
-                dir = random.randint(0, 8)
-            usedDirections.append(dir)
-            jointPos = parent.Joint_Pos_From_Dir(dir)
-            match dir:
-                case 0:
-                    pos=[0,0,z/2]
-                case 1:
-                    pos=[x/2,0,0]
-                case 2:
-                    pos=[-x/2,0,0]
-                case 3:
-                    pos=[0,y/2,0]
-                case 4:
-                    pos=[0,-y/2,0]
-                case 5:
-                    pos=[x/2,0,z/2]
-                case 6:
-                    pos=[-x/2,0,z/2]
-                case 7: 
-                    pos=[0,y/2,z/2]
-                case 8: 
-                    pos=[0,-y/2,z/2]
-                
-            numJoints = random.randint(1, 2)
-            usedAxes=[]
-            newnode = NODE('A'+str(i), [x,y,z], pos, sensor)
-            parent.Add_Child(newnode)
-
-            numJoints = 1 ###
-            for i in range(numJoints):
-                ax = random.randint(0, 2)
-                while ax in usedAxes:
-                    ax = random.randint(0, 2)
-                usedAxes.append(ax)
-                match ax:
-                    case 0: axis="1 0 0"
-                    case 1: axis="0 1 0"
-                    case 2: axis="0 0 1"
-                pyrosim.Send_Joint(name=parent.name+'_'+newnode.name+str(i), parent=parent.name, child=newnode.name, type = "revolute", position = jointPos, jointAxis=axis) 
-
-            newnode.Send_Link(col)
+        genotype = GENOTYPE()
             
-        # update parent, num_children
-        
         
         #if self.sensors[0]:
         #    col = "green"
