@@ -6,6 +6,7 @@ import numpy
 import os
 import time
 import constants as c
+from genotype import NODE
 
 class SOLUTION:
     def __init__(self, ID):
@@ -36,47 +37,126 @@ class SOLUTION:
 
     def Generate_Body(self):
         pyrosim.Start_URDF("body" + str(self.myID) + ".urdf")
-        # randomly decide number of links
-        # choose random bound for link dimensions
-        # use array to store which links have sensors
-        # create links (and joints) with random dimensions and appropriate coordinates
+        # randomly decide number of 'steps': 2-5
+        # choose random bound for link dimensions 
+        # store link info in tree - first node is root, next nodes are links connected to root, so on
+        # for each link, choose number of children: 0-4? and choose direction relative to parent, don't repeat directions
+        # while making tree, choose link dimensions and coordinates, choose if link has a sensor
+        # create links while making tree, add joints too
+
         # store joint names in a list
         # send a motor to each joint
         
-        self.chainlen = random.randint(5, 15)
+        self.depth = random.randint(2, 5)
         bound = random.uniform(0.5, 2)
-        self.sensors = [0]*self.chainlen
-        for i in range(self.chainlen):
-            coin = random.randint(0, 1)
-            if coin:
-                self.sensors[i] = 1
-
         x = random.uniform(0.1, bound)
         y = random.uniform(0.1, bound)
         z = random.uniform(0.1, bound)
-        if self.sensors[0]:
+
+        sensor = False
+        if random.randint(0, 1):
+            sensor = True
+        
+        root = NODE(name='root', dims=[x,y,z], pos=[0, 0, 1], sens=sensor)
+
+        if sensor:
             col = "green"
         else:
             col = "cyan"
-        pyrosim.Send_Cube(name="L0", pos=[0, 0, 1.5], size=[x,y,z], color=col)
-        pyrosim.Send_Joint(name="L0_L1", parent="L0", child="L1", type = "revolute", position=[0,-y/2,1.5], jointAxis = "1 0 0")
 
-        for i in range(1, self.chainlen):
+        root.Send_Link(col)
+
+        #num_children = random.randint(1, 4)
+        num_children = 4
+
+        parent = root
+        #for j in range(self.depth - 1):
+        usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
+        for i in range(num_children):
             x = random.uniform(0.1, bound)
             y = random.uniform(0.1, bound)
             z = random.uniform(0.1, bound)
-            if self.sensors[i]:
+
+            sensor = False
+            if random.randint(0, 1):
+                sensor = True
+            if sensor:
                 col = "green"
             else:
                 col = "cyan"
-            pyrosim.Send_Cube(name='L'+str(i), pos=[0,-y/2,0], size=[x,y,z], color=col)
-            if i < self.chainlen-1:
-                pyrosim.Send_Joint(name='L'+str(i)+'_'+'L'+str(i+1),parent='L'+str(i),child='L'+str(i+1),type="revolute",position=[0,-y,0],jointAxis="1 0 0")
+
+            dir = random.randint(0, 8)
+            while dir in usedDirections:
+                dir = random.randint(0, 8)
+            usedDirections.append(dir)
+            jointPos = parent.Joint_Pos_From_Dir(dir)
+            match dir:
+                case 0:
+                    pos=[0,0,z/2]
+                case 1:
+                    pos=[x/2,0,0]
+                case 2:
+                    pos=[-x/2,0,0]
+                case 3:
+                    pos=[0,y/2,0]
+                case 4:
+                    pos=[0,-y/2,0]
+                case 5:
+                    pos=[x/2,0,z/2]
+                case 6:
+                    pos=[-x/2,0,z/2]
+                case 7: 
+                    pos=[0,y/2,z/2]
+                case 8: 
+                    pos=[0,-y/2,z/2]
+                
+            numJoints = random.randint(1, 2)
+            usedAxes=[]
+            newnode = NODE('A'+str(i), [x,y,z], pos, sensor)
+            parent.Add_Child(newnode)
+
+            numJoints = 1 ###
+            for i in range(numJoints):
+                ax = random.randint(0, 2)
+                while ax in usedAxes:
+                    ax = random.randint(0, 2)
+                usedAxes.append(ax)
+                match ax:
+                    case 0: axis="1 0 0"
+                    case 1: axis="0 1 0"
+                    case 2: axis="0 0 1"
+                pyrosim.Send_Joint(name=parent.name+'_'+newnode.name+str(i), parent=parent.name, child=newnode.name, type = "revolute", position = jointPos, jointAxis=axis) 
+
+            newnode.Send_Link(col)
+            
+        # update parent, num_children
+        
+        
+        #if self.sensors[0]:
+        #    col = "green"
+        #else:
+        #    col = "cyan"
+        #pyrosim.Send_Cube(name="L0", pos=[0, 0, 1.5], size=[x,y,z], color=col)
+        #pyrosim.Send_Joint(name="L0_L1", parent="L0", child="L1", type = "revolute", position=[0,-y/2,1.5], jointAxis = "1 0 0")
+
+        #for i in range(1, self.chainlen):
+        #    x = random.uniform(0.1, bound)
+        #    y = random.uniform(0.1, bound)
+        #    z = random.uniform(0.1, bound)
+        #    if self.sensors[i]:
+        #        col = "green"
+        #    else:
+        #        col = "cyan"
+        #    pyrosim.Send_Cube(name='L'+str(i), pos=[0,-y/2,0], size=[x,y,z], color=col)
+        #    if i < self.chainlen-1:
+        #        pyrosim.Send_Joint(name='L'+str(i)+'_'+'L'+str(i+1),parent='L'+str(i),child='L'+str(i+1),type="revolute",position=[0,-y,0],jointAxis="1 0 0")
 
         pyrosim.End()
 
     def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork("brain" + str(self.myID) + ".nndf")
+        pyrosim.End()
+        return   
         counter = 0
         for i in range(self.chainlen):
             if self.sensors[i]:
