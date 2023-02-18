@@ -25,7 +25,8 @@ is connected to each motor neuron.
 ## What morphologies are possible? 
 The program could generate a snake or a quadruped, although this is unlikely. In most cases, the body generated
 will just be a group of randomly connected rectangular prisms that bear little resemblance to anything living. With regards
-to movement, the possibilities range from bouncing aimlessly to crawling or walking.
+to movement, the possibilities range from bouncing aimlessly to crawling or walking. [Here](https://www.youtube.com/watch?v=KaYPuSWcNjU)'s
+a short video demonstrating a few random bodies.
 
 ![Screenshot 2023-02-18 000439 817](https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png)
 
