@@ -18,15 +18,14 @@ An example of a possible new link is drawn in blue for two of the directions. Ea
 
 ![Screenshot 2023-02-17 194651](https://user-images.githubusercontent.com/68213464/219844289-0bc2b58b-bb87-4a65-826d-901fc4e9e17d.png)
 
-
 ## How are brains generated?
 Each green link has a sensor neuron and each joint has a motor neuron. Each sensor neuron 
 is connected to each motor neuron.
 
 ## What morphologies are possible? 
 The program could generate a snake or a quadruped, although this is unlikely. In most cases, the body generated
-will just be a group of randomly connected rectangular prisms that bear little resemblance to anything living.
-
+will just be a group of randomly connected rectangular prisms that bear little resemblance to anything living. With regards
+to movement, the possibilities range from bouncing aimlessly to crawling or walking.
 
 ![Screenshot 2023-02-18 000439 817](https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png)
 
