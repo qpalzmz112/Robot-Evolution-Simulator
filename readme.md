@@ -16,7 +16,7 @@ For each of the links added, it has randomly chosen dimensions subject to the co
 the program chooses randomly among 9 directions. For each direction, the corresponding joint location is represented with a red dot.
 An example of a possible new link is drawn in blue for two of the directions.
 
-DIAGRAM
+![Screenshot 2023-02-17 194651](https://user-images.githubusercontent.com/68213464/219844289-0bc2b58b-bb87-4a65-826d-901fc4e9e17d.png)
 
 Each joint can move on one axis, randomly chosen among the x, y, and z-axes.
 
@@ -28,7 +28,8 @@ is connected to each motor neuron.
 The program could generate a snake or a quadruped, although this is unlikely. In most cases, the body generated
 will just be a group of randomly connected rectangular prisms that bear little resemblance to anything living.
 
-DIAGRAM
+
+![Screenshot 2023-02-18 000439 817](https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png)
 
 ## Sources:
 CS 396: Artifial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
