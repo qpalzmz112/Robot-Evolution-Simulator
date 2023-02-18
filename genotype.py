@@ -35,14 +35,14 @@ class GENOTYPE:
         self.sensorLinks = []
         self.jointNames = []
 
-        depth = random.randint(2, 5) # upper bound: 5?
+        depth = random.randint(2, 4) # upper bound: 5?
         bound = random.uniform(0.5, 1) # upper bound: 2?
 
         self.root = LINK_NODE(name='root', dims=randomDims(bound), pos=[0,0,1], color=randomColor(), depth=0, dir=None)
         root=self.root
         if root.color == "green":
             self.sensorLinks.append('root')
-        numChildren = random.randint(1,2) # upper bound: 4?
+        numChildren = random.randint(1,4) # upper bound: 4?
         usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
         todo = []
         for i in range(numChildren):
@@ -66,7 +66,7 @@ class GENOTYPE:
         counter = 0
         while todo:
             currLink = todo.pop(0)
-            numChildren = random.randint(0, 3)
+            numChildren = random.randint(1, 2)
             usedDirections = []
             for i in range(numChildren):
                 dir = random.randint(0,8)

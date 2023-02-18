@@ -13,9 +13,9 @@ populationSize = 1
 numSensorNeurons = 16
 numMotorNeurons = 15
 
-maxForce = 250
+maxForce = 500
 simLength = 1000
 
-motorJointRange = 1
+motorJointRange = 3
 
 

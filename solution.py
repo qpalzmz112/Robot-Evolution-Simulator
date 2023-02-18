@@ -74,7 +74,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        pass
+        return
         randomRow = random.randint(0, 2)
         randomColumn = random.randint(0, 1)
         self.weights[randomRow][randomColumn] = random.random() * c.motorJointRange - (c.motorJointRange/2)

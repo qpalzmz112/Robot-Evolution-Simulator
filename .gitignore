@@ -1,6 +1,7 @@
 *.sdf
 *.urdf
 *.nndf
+*.txt
 .vs/
 data/
 __pycache__/
