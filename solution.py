@@ -55,25 +55,24 @@ class SOLUTION:
 
     def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork("brain" + str(self.myID) + ".nndf")
-        pyrosim.End()
-        return   
+
         counter = 0
-        for i in range(self.chainlen):
-            if self.sensors[i]:
-                pyrosim.Send_Sensor_Neuron(name = str(counter), linkName = 'L'+str(i))
-                counter += 1
-        numSensors = counter
-        for i in range(self.chainlen-1):
-            pyrosim.Send_Motor_Neuron(name = str(counter), jointName = 'L'+str(i)+'_'+'L'+str(i+1))
+        for linkName in self.genotype.sensorLinks:
+            pyrosim.Send_Sensor_Neuron(name = str(counter), linkName = linkName)
+            counter += 1
+
+        for jointName in self.genotype.jointNames:
+            pyrosim.Send_Motor_Neuron(name = str(counter), jointName = jointName)
             counter += 1
      
-
+        numSensors = len(self.genotype.sensorLinks)
         for currentRow in range(numSensors):
-            for currentColumn in range(self.chainlen-1): #num motor neurons
+            for currentColumn in range(len(self.genotype.jointNames)): #num motor neurons
                 pyrosim.Send_Synapse( sourceNeuronName = currentRow, targetNeuronName = currentColumn + numSensors, weight = self.weights[currentRow][currentColumn])
         pyrosim.End()
 
     def Mutate(self):
+        pass
         randomRow = random.randint(0, 2)
         randomColumn = random.randint(0, 1)
         self.weights[randomRow][randomColumn] = random.random() * c.motorJointRange - (c.motorJointRange/2)

@@ -32,12 +32,16 @@ class JOINT_NODE:
 
 class GENOTYPE:
     def __init__(self):
+        self.sensorLinks = []
+        self.jointNames = []
+
         depth = random.randint(2, 5) # upper bound: 5?
         bound = random.uniform(0.5, 1) # upper bound: 2?
 
         self.root = LINK_NODE(name='root', dims=randomDims(bound), pos=[0,0,1], color=randomColor(), depth=0, dir=None)
         root=self.root
-
+        if root.color == "green":
+            self.sensorLinks.append('root')
         numChildren = random.randint(1,2) # upper bound: 4?
         usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
         todo = []
@@ -53,6 +57,9 @@ class GENOTYPE:
             
             newLink = LINK_NODE(name='A'+str(i), dims=size, pos=linkPos, color=randomColor(), depth=1, dir=dir)
             newJoint = JOINT_NODE(name=root.name+'_'+newLink.name, parent='root', child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
+            if newLink.color == "green":
+                self.sensorLinks.append(newLink.name)
+            self.jointNames.append(newJoint.name)
             root.Add_Child(newJoint)
             todo.append(newLink)
 
@@ -76,6 +83,9 @@ class GENOTYPE:
                 newLink = LINK_NODE(name=chr(currLink.depth+65)+str(counter), dims=size, pos=linkPos, color=randomColor(), depth=currLink.depth+1, dir=dir)
                 counter += 1
                 newJoint = JOINT_NODE(name=currLink.name+'_'+newLink.name, parent=currLink.name, child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
+                if newLink.color == "green":
+                    self.sensorLinks.append(newLink.name)
+                self.jointNames.append(newJoint.name)
                 currLink.Add_Child(newJoint)
                 if (newLink.depth < depth):
                     todo.append(newLink)
