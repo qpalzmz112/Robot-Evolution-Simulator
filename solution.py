@@ -10,7 +10,7 @@ from genotype import GENOTYPE
 
 class SOLUTION:
     def __init__(self, ID):
-        self.weights = numpy.random.rand(c.numSensorNeurons, c.numMotorNeurons) * c.motorJointRange - (c.motorJointRange/2)
+        #self.weights = numpy.random.rand(c.numSensorNeurons, c.numMotorNeurons) * c.motorJointRange - (c.motorJointRange/2)
         self.myID = ID
         self.genotype = GENOTYPE()
 
@@ -66,8 +66,10 @@ class SOLUTION:
             counter += 1
      
         numSensors = len(self.genotype.sensorLinks)
+        numMotors = len(self.genotype.jointNames)
+        self.weights = numpy.random.rand(numSensors, numMotors) * c.motorJointRange - (c.motorJointRange/2)
         for currentRow in range(numSensors):
-            for currentColumn in range(len(self.genotype.jointNames)): #num motor neurons
+            for currentColumn in range(numMotors): #num motor neurons
                 pyrosim.Send_Synapse( sourceNeuronName = currentRow, targetNeuronName = currentColumn + numSensors, weight = self.weights[currentRow][currentColumn])
         pyrosim.End()
 
