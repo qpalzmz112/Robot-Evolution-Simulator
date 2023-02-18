@@ -14,11 +14,10 @@ to attach to them, and so on until the depth constraint is reached.
 For each of the links added, it has randomly chosen dimensions subject to the constraint mentioned above, and a 
 50% chance to contain a sensor, in which case the link is colored green. When attaching a new link to a present link,
 the program chooses randomly among 9 directions. For each direction, the corresponding joint location is represented with a red dot.
-An example of a possible new link is drawn in blue for two of the directions.
+An example of a possible new link is drawn in blue for two of the directions. Each joint can move on one axis, randomly chosen among the x, y, and z-axes.
 
 ![Screenshot 2023-02-17 194651](https://user-images.githubusercontent.com/68213464/219844289-0bc2b58b-bb87-4a65-826d-901fc4e9e17d.png)
 
-Each joint can move on one axis, randomly chosen among the x, y, and z-axes.
 
 ## How are brains generated?
 Each green link has a sensor neuron and each joint has a motor neuron. Each sensor neuron 
