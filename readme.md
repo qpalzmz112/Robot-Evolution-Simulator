@@ -31,4 +31,4 @@ a short video demonstrating a few random bodies.
 ![Screenshot 2023-02-18 000439 817](https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png)
 
 ## Sources:
-CS 396: Artifial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
+CS 396: Artificial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
