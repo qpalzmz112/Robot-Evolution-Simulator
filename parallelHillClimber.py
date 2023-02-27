@@ -2,6 +2,7 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+import numpy
 
 class PARALLEL_HILLCLIMBER:
     def __init__(self):
@@ -9,6 +10,7 @@ class PARALLEL_HILLCLIMBER:
         os.system("del brain*.nndf")
         os.system("del world*.sdf")
         os.system("del body*.urdf")
+        self.values = numpy.zeros(c.numberOfGenerations)
         self.nextAvailableID = 0
         self.parents = {}
         for i in range(c.populationSize):
@@ -16,17 +18,23 @@ class PARALLEL_HILLCLIMBER:
             self.nextAvailableID += 1
         
 
-    def Evolve(self):
+    def Evolve(self, trialNum=-1):
         self.Evaluate(self.parents)
-        for currentGeneration in range(c.numberOfGenerations):
-            self.Evolve_For_One_Generation()
+        for i in range(c.numberOfGenerations):
+            self.Evolve_For_One_Generation(i)
+            self.values[i] = self.Best_Fitness()
+        if trialNum != -1:
+            numpy.save("".join(["data/Trial", str(trialNum), "BestFitness.npy"]), self.values)
 
-    def Evolve_For_One_Generation(self):
+    def Evolve_For_One_Generation(self, num):
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
         self.Print()
         self.Select()
+        print("\n\n\n\n\n")
+        print("Generation number: " + str(num))
+        print("\n\n\n\n\n")
 
     def Spawn(self):
         self.children = {}
@@ -57,7 +65,15 @@ class PARALLEL_HILLCLIMBER:
             if self.parents[k].fitness > max:
                 max = self.parents[k].fitness
                 ind = k
+        print("fitness: " + str(max))
         self.parents[ind].Start_Simulation("GUI")
+
+    def Best_Fitness(self):
+        max = self.parents[0].fitness
+        for k in self.parents.keys():
+            if self.parents[k].fitness > max:
+                max = self.parents[k].fitness
+        return max
     
     def Print(self):
         for k in self.parents.keys():

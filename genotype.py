@@ -17,6 +17,9 @@ class LINK_NODE:
     def Send(self):
         pyrosim.Send_Cube(name=self.name, pos=self.pos, size=self.dims, color=self.color)
 
+    def Print(self):
+        print("LINK_NODE: name: "+self.name)
+
 class JOINT_NODE:
     def __init__(self, name, parent, child, pos, axis, link):
         self.name = name  
@@ -29,19 +32,25 @@ class JOINT_NODE:
     def Send(self):
         pyrosim.Send_Joint(name=self.name, parent=self.parent, child=self.child, type="revolute", position=self.pos, jointAxis=self.axis)
 
+    def Print(self):
+        print("JOINT_NODE: name: "+self.name+" position: "+str(self.pos))
+
 
 class GENOTYPE:
     def __init__(self):
         self.sensorLinks = []
         self.jointNames = []
-
+        self.leaves = []
+        self.leafParents = []
+        
         depth = random.randint(2, 4) # upper bound: 5?
-        bound = random.uniform(0.5, 1) # upper bound: 2?
+        
+        self.bound = random.uniform(0.5, 1) # upper bound: 2?
 
-        self.root = LINK_NODE(name='root', dims=randomDims(bound), pos=[0,0,1], color=randomColor(), depth=0, dir=None)
-        root=self.root
-        if root.color == "green":
+        self.root = LINK_NODE(name='root', dims=randomDims(self.bound), pos=[0,0,1], color=randomColor(), depth=0, dir=None)
+        if self.root.color == "green":
             self.sensorLinks.append('root')
+            
         numChildren = random.randint(1,4) # upper bound: 4?
         usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
         todo = []
@@ -51,22 +60,23 @@ class GENOTYPE:
                 dir = random.randint(0, 8)
             usedDirections.append(dir)
 
-            size = randomDims(bound)
-            jointPos = absJointPosFromDir(root.pos, root.dims, dir)
+            size = randomDims(self.bound)
+            jointPos = absJointPosFromDir(self.root.pos, self.root.dims, dir)
             linkPos = relLinkPosFromDir(size,dir)
             
             newLink = LINK_NODE(name='A'+str(i), dims=size, pos=linkPos, color=randomColor(), depth=1, dir=dir)
-            newJoint = JOINT_NODE(name=root.name+'_'+newLink.name, parent='root', child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
+            newJoint = JOINT_NODE(name="root"+'_'+newLink.name, parent="root", child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
             if newLink.color == "green":
                 self.sensorLinks.append(newLink.name)
             self.jointNames.append(newJoint.name)
-            root.Add_Child(newJoint)
+            self.root.Add_Child(newJoint)
             todo.append(newLink)
 
-        counter = 0
+        self.counter = 0
         while todo:
             currLink = todo.pop(0)
-            numChildren = random.randint(1, 2)
+            
+            numChildren = random.randint(1, 1) #2?
             usedDirections = []
             for i in range(numChildren):
                 dir = random.randint(0,8)
@@ -74,14 +84,14 @@ class GENOTYPE:
                     dir = random.randint(0,8)
                 usedDirections.append(dir)
 
-                size = randomDims(bound)
+                size = randomDims(self.bound)
                 jointPos = relJointPosFromDir(currLink.dims, currLink.dirFromParent, dir)
                 if jointPos == None:
                     continue # don't add a link that would intersect, may want to work on this
                 linkPos = relLinkPosFromDir(size, dir)
 
-                newLink = LINK_NODE(name=chr(currLink.depth+65)+str(counter), dims=size, pos=linkPos, color=randomColor(), depth=currLink.depth+1, dir=dir)
-                counter += 1
+                newLink = LINK_NODE(name=chr(currLink.depth+65)+str(self.counter), dims=size, pos=linkPos, color=randomColor(), depth=currLink.depth+1, dir=dir)
+                self.counter += 1
                 newJoint = JOINT_NODE(name=currLink.name+'_'+newLink.name, parent=currLink.name, child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
                 if newLink.color == "green":
                     self.sensorLinks.append(newLink.name)
@@ -89,6 +99,9 @@ class GENOTYPE:
                 currLink.Add_Child(newJoint)
                 if (newLink.depth < depth):
                     todo.append(newLink)
+                else:
+                    self.leafParents.append(currLink)
+                    self.leaves.append(newLink)
 
     def Generate_Body(self, id):
         # start with root
@@ -105,6 +118,45 @@ class GENOTYPE:
             curr.Send()
         
         pyrosim.End()   
+
+    def Add_Random_Link(self):
+        if len(self.leaves) == 0:
+            return
+        i = random.randint(0, len(self.leaves)-1)
+        currLink = self.leaves[i]
+
+        size = randomDims(self.bound)
+        
+        dir = random.randint(0,8)
+
+        jointPos = relJointPosFromDir(currLink.dims, currLink.dirFromParent, dir)
+        while jointPos == None:
+            dir = random.randint(0,8)
+            jointPos = relJointPosFromDir(currLink.dims, currLink.dirFromParent, dir)
+        linkPos = relLinkPosFromDir(size, dir)
+
+        newLink = LINK_NODE(name=chr(currLink.depth+65)+str(self.counter), dims=size, pos=linkPos, color=randomColor(), depth=currLink.depth+1, dir=dir)
+        self.counter += 1
+        newJoint = JOINT_NODE(name=currLink.name+'_'+newLink.name, parent=currLink.name, child=newLink.name, pos=jointPos, axis=randomAxis(),link=newLink)
+        if newLink.color == "green":
+            self.sensorLinks.append(newLink.name)
+        self.jointNames.append(newJoint.name)
+        currLink.Add_Child(newJoint)
+
+    def Remove_Random_Link(self):
+        if len(self.leafParents) == 0:
+            return
+        i = random.randint(0, len(self.leafParents)-1)
+        if len(self.leafParents[i].children) == 0:
+            return
+        j = random.randint(0, len(self.leafParents[i].children)-1)
+        joint = self.leafParents[i].children.pop(j)
+
+        self.jointNames.remove(joint.name)
+        link = joint.children[0]
+        if link.color == "green":
+            self.sensorLinks.remove(link.name)
+ 
 
 def absJointPosFromDir(rootPos, rootDims, dir): # absolute; only use for joints whose parent is root link
     px, py, pz = rootPos[0], rootPos[1], rootPos[2]
