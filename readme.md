@@ -15,8 +15,7 @@ For each of the links added, it has randomly chosen dimensions subject to the co
 50% chance to contain a sensor, in which case the link is colored green. When attaching a new link to a present link,
 the program chooses randomly among 9 directions. For each direction, the corresponding joint location is represented with a red dot.
 An example of a possible new link is drawn in blue for two of the directions. Each joint can move on one axis, randomly chosen among the x, y, and z-axes.
-
-![Screenshot 2023-02-17 194651](https://user-images.githubusercontent.com/68213464/219844289-0bc2b58b-bb87-4a65-826d-901fc4e9e17d.png)
+<img src="https://user-images.githubusercontent.com/68213464/219844289-0bc2b58b-bb87-4a65-826d-901fc4e9e17d.png" width="500" height="500">
 
 ## How are brains generated?
 Each green link has a sensor neuron and each joint has a motor neuron. Each sensor neuron 
@@ -27,8 +26,7 @@ The program could generate a snake or a quadruped, although this is unlikely. In
 will just be a group of randomly connected rectangular prisms that bear little resemblance to anything living. With regards
 to movement, the possibilities range from bouncing aimlessly to crawling or walking. [Here](https://www.youtube.com/watch?v=KaYPuSWcNjU)'s
 a short video demonstrating a few random bodies.
-
-![Screenshot 2023-02-18 000439 817](https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png)
+<img src="https://user-images.githubusercontent.com/68213464/219844293-2056f50a-90a3-4ec4-9582-dcaac5d19770.png" width="500" height="500">
 
 ## Sources:
 CS 396: Artificial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
