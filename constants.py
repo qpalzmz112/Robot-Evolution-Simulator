@@ -1,7 +1,7 @@
 import numpy
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 10
+populationSize = 10
 
 maxForce = 500
 simLength = 2000
