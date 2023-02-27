@@ -15,4 +15,4 @@ Mutations are randomly selected from two options: adding a link or changing a sy
 When a synapse weight is changed, a random synapse is chosen and its weight is updated to a random number, still subject to the motorJointRange constraint defined in constants.py.
 
 ## Sources:
-CS 396: Artifial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
+CS 396: Artificial Life at Northwestern University, r/ludobots, and [pyrosim](https://github.com/jbongard/pyrosim).
