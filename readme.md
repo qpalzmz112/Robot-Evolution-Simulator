@@ -19,6 +19,9 @@ From this I hope to contribute to the answers to two questions: "How many parts 
 ## How are genotypes mapped to phenotypes?
 <img src="https://user-images.githubusercontent.com/68213464/225113561-5952bf95-6eef-48ae-adad-e3f59ee8158c.png" width="400" height="300">
 
+## How are robots selected against each other?
+<img src="" width="400" height="300">
+
 ## How are bodies and brains generated?
 Take a look at [this](https://github.com/qpalzmz112/ludobots/tree/Assignment7#readme) readme.
 
