@@ -8,7 +8,8 @@ Then, when a trial is done, you will be prompted to press enter to view the best
 ## Hypothesis:
 Robots with more links will move further than robots with few links. The reasoning for this hypothesis comes from the fact that my simulator is very simple. Each joint rotates about one axis, and I expect robots which have links rotating about more axes to move further than robots with links rotating about fewer axes.
 
-This experiment is motivated by an observation made by Professor Kriegman: some of Karl Sims' [robots](https://www.karlsims.com/evolved-virtual-creatures.html) move very well with only a few links constituting their bodies. I'd like to see if my simulator can achieve similar results, or if its simplicity requires robots to have more links than Sims'.
+This experiment is motivated by an observation made by Professor Kriegman: some of Karl Sims' [robots](https://www.karlsims.com/evolved-virtual-creatures.html) move very well with only a few links constituting their bodies. I'd like to see if my simulator can achieve similar results, or if its simplicity requires robots to have more links than Sims'. For example, here's one of Sims' robots with 3 links, that moves quite well. 
+<img src="https://user-images.githubusercontent.com/68213464/221488995-4e9f2ef5-7682-4e6a-a511-9a9e67887cb9.png" width="500" height="500">
 
 From this I hope to contribute to the answers to two questions: "How many parts should make up the body of a robot evolved for locomotion?" and "How do the differences in variety and complexity of random robot bodies affect the robots' ability to move?" In any case, my results will give some insight into the first question. If my hypothesis is correct, it would appear that Sims' more advanced range of robot bodies is capable of generating better robots than my simulator, which would be relevant to the second question.
 
