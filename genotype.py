@@ -1,5 +1,6 @@
 import pyrosim.pyrosim as pyrosim
 import random
+import constants as c
 
 class LINK_NODE:
     def __init__(self, name, dims, pos, color, depth, dir):
@@ -42,6 +43,7 @@ class GENOTYPE:
         self.jointNames = []
         self.leaves = []
         self.leafParents = []
+        self.numLinks = 1 # root
         
         depth = random.randint(2, 4) # upper bound: 5?
         
@@ -54,7 +56,9 @@ class GENOTYPE:
         numChildren = random.randint(1,4) # upper bound: 4?
         usedDirections = [] # 9 directions: 0 = +z, 1 = +x, 2 = -x, 3 = +y, 4 = -y, 5 = +x+z, 6 = -x+z, 7 = +y+z, 8 = -y+z
         todo = []
-        for i in range(numChildren):
+        for i in range(numChildren): # adds children to root
+            if self.numLinks == c.maxLinks:
+                break
             dir = random.randint(0, 8)
             while dir in usedDirections:
                 dir = random.randint(0, 8)
@@ -71,9 +75,12 @@ class GENOTYPE:
             self.jointNames.append(newJoint.name)
             self.root.Add_Child(newJoint)
             todo.append(newLink)
+            self.numLinks += 1
 
         self.counter = 0
-        while todo:
+        while todo: # adds children to children
+            if self.numLinks == c.maxLinks:
+                break
             currLink = todo.pop(0)
             
             numChildren = random.randint(1, 1) #2?
@@ -102,13 +109,9 @@ class GENOTYPE:
                 else:
                     self.leafParents.append(currLink)
                     self.leaves.append(newLink)
+                self.numLinks += 1
 
     def Generate_Body(self, id):
-        # start with root
-        # add child joints to todo
-        # send root
-        # for each joint in todo, add its child node to todo then send the joint
-        # for each child node in joint, add its children and then send it
         pyrosim.Start_URDF("body" + str(id) + ".urdf")
 
         todo = [self.root]
@@ -120,6 +123,9 @@ class GENOTYPE:
         pyrosim.End()   
 
     def Add_Random_Link(self):
+        if self.numLinks == c.maxLinks:
+            return
+
         if len(self.leaves) == 0:
             return
         i = random.randint(0, len(self.leaves)-1)
@@ -142,6 +148,7 @@ class GENOTYPE:
             self.sensorLinks.append(newLink.name)
         self.jointNames.append(newJoint.name)
         currLink.Add_Child(newJoint)
+        self.numLinks += 1
 
     def Remove_Random_Link(self):
         if len(self.leafParents) == 0:
