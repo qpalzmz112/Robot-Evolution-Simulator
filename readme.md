@@ -1,4 +1,9 @@
 # Final project: Does the number of links in a robot's body correlate with its ability to move?
+
+https://user-images.githubusercontent.com/68213464/225192647-ad4e4a87-a29d-43e8-955c-05b4f9dc4acf.mp4
+
+[Summary video](https://youtu.be/UZNWmBN9M14)
+
 To run, clone and run `trial.py`. This will run five trials, each with population size and number of generations specified in constants.py. Then, it will generate a graph showing the maximum fitness per generation in each trial. If you want to see the best robot of each trial, uncomment the following code:  
     `#input("Press Enter to continue...")`<br>
     `#phc.Show_Best()`<br>
